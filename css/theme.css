@@ -1,0 +1,8 @@
+body{
+    --whiteMode: #fff;
+    --darkMode: #242424;
+    --darkModeInfo:#454545;
+}
+.highlight {
+    margin-bottom: 10px;
+}

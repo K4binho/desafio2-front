@@ -1,0 +1,96 @@
+// 
+// const nome = document.querySelector('.subtitle');
+// const img = document.querySelector('.highlight__video');
+
+// pokemon.addEventListener('change', function () {
+//     const promiseResposta = fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.value}`);
+
+//     promiseResposta.then(function(resposta){
+//         const promiseBody = resposta.json();
+
+//         promiseBody.then(function(body){
+//             console.log(body)
+//             nome.textContent = body.name;
+//             img.src = body.sprites.front_default;
+//         })
+//     })
+
+// });
+
+
+// A estrutura HTML deverá ser a seguinte:
+// ![](https://i.imgur.com/s8j6m3E.png)
+
+// Informações do retorno da API necessárias para o preenchimento:
+// - background-image da `<div class="movie">` === poster_path
+// - texto do `<span class="movie__title">` === title
+// - texto do `<span class="movie__rating">` === vote_average
+
+// Essa estrutura terá que ser criada para **cada filme** poderá ser construida dinamicamente pela DOM, porém, isso **não é obrigatório**.
+
+// Cada filme deverá ser colocado dentro da `<div class="movies">`
+
+a função getFilmes pega o array de filmes
+a buildelements cria os card e coloca no html
+o makecard separa o array de filme para poder criar os card
+
+const tudo = document.querySelector('.content-card');
+
+let filmes = [];
+let filmesSearch = [];
+
+const getFilmes = async () => {
+    const response = await fetch('https://api.jikan.moe/v3/top/anime/1/airing');
+    const data = await response.json();
+    filmes = data.top;
+    filmesSearch = filmes;
+}
+
+const buildElements = (item) => {
+    const cardProduct = document.createElement('div');
+    cardProduct.classList.add('card-product');
+
+    const image = document.createElement('img');
+    image.classList.add('card-product__item-image');
+    image.src = item.image_url;
+    image.alt = item.title;
+
+    const title = document.createElement('h2');
+    title.classList.add('card-product__item-title');
+    title.textContent = item.title;
+
+    const detail = document.createElement('button');
+    detail.classList.add('card-product__btn-detail');
+    detail.textContent = 'Detalhes';
+    detail.addEventListener('click', () => {
+        window.open(item.url, '_blank');
+    });
+
+    cardProduct.appendChild(image);
+    cardProduct.appendChild(title);
+    cardProduct.appendChild(detail);
+    
+    tudo.append(cardProduct);
+}
+
+
+const makeCardfilmes = (start, end) => {
+    const temp = filmesSearch.slice(start, end);
+    tudo.innerHTML = '';
+    temp.forEach(item => {
+        buildElements(item);
+    });
+}
+
+const init = async () => {
+    await getFilmes();
+    makeCardfilmes(0, 3);
+}
+
+init();
+
+//Highlight do dia
+const detalhesFilme = document.querySelector(".highlight__launch");
+const titulo = document.querySelector(".highlight__title");
+const video = document.querySelector(".highlight__video");
+const nota = document.querySelector(".highlight__rating");
